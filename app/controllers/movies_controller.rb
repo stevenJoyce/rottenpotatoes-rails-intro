@@ -1,10 +1,4 @@
 class MoviesController < ApplicationController
-
-  #added a method to make sure all movie ratings are sorted 
-  #into a correct table for each different rating
-  def initialize
-    @all_ratings = Movie.all_ratings
-  end
   
   def show
     id = params[:id] # retrieve movie ID from URI route
@@ -14,6 +8,14 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
+    @all_ratings = Movie.all_ratings
+    params[:ratings]
+    params[:sort]
+    @ratings_to_show = params[:ratings] || session[:ratings] || {}
+     #if all ratings are clicked
+    if @ratings_to_show == {}
+      @ratings_to_show = Hash[@all_ratings.map {|rating| [rating,rating]}]
+    end    
   end
 
   def new

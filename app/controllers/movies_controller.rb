@@ -7,28 +7,18 @@ class MoviesController < ApplicationController
   end
 
   def index
-    #@movies = Movie.all
+    @movies = Movie.all
     @all_ratings = Movie.all_ratings
     @sort = params[:sort] || session[:sort]
     @ratings = params[:ratings] || session[:ratings]
-    #sets the movies to show only movies that that been checked
-    @movies = Movie.where({rating: @ratings.keys}).order(@sort)
     
-    
-    
-    #check if any ratings have been checked 
-    if @ratings.nil?
-      ratings = Movie.all_ratings
-    else
-      ratings = @ratings.keys
-    end
-      
     @ratings_to_show = params[:ratings] || session[:ratings] || {}
      #if all ratings are clicked
     if @ratings_to_show == {}
       @ratings_to_show = Hash[@all_ratings.map {|rating| [rating,rating]}]
+    else
+       @movies = Movie.where({rating: @ratings.keys}).order(@sort)
     end    
-      
   end
 
   def new

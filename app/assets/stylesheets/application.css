@@ -13,6 +13,6 @@
  *= require_tree .
  *= require_self
  */
-table#movies th a.highlight{
+table#movies th.highlight{
   background-color="yellow";
 }

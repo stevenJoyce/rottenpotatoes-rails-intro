@@ -14,5 +14,5 @@
  *= require_self
  */
 table#movies th a.highlight{
-  background-color="yellow"
+  background-color="yellow";
 }

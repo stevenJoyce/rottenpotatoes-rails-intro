@@ -11,13 +11,12 @@
     <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
 <% end %>
 <%#  Part 2: Start here... %>
-
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <th><%= link_to 'Movie Title',movies_path(:sort =>'title'), :id=>'title', :class=>"highlight"%></th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th><%= link_to 'Release Date', movies_path(:sort =>'release_date'), :id=>'release_date', :class=>"highlight"%></th>
       <th>More Info</th>
     </tr>
   </thead>

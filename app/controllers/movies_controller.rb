@@ -9,16 +9,49 @@ class MoviesController < ApplicationController
   def index
     @movies = Movie.all
     @all_ratings = Movie.all_ratings
-    @sort = params[:sort] || session[:sort]
     @ratings = params[:ratings] || session[:ratings]
-    
-    @ratings_to_show = params[:ratings] || session[:ratings] || {}
-     #if all ratings are clicked
-    if @ratings_to_show == {}
-      @ratings_to_show = Hash[@all_ratings.map {|rating| [rating,rating]}]
+     
+    #checks if the ratings parameter has been checked
+    #if not sets all movies to be shown
+    if params[:ratings]
+      @ratings_to_show = params[:ratings]
+      session[:ratings] = @ratings_to_show
+    elsif session[:ratings]
+      @ratings_to_show= session[:ratings]
     else
-       @movies = Movie.where({rating: @ratings.keys}).order(@sort)
-    end    
+      @ratings_to_show = nil
+    end
+    
+    #
+    if params[:sort]
+      @sort =params[:sort]
+      session[:sort] = @sort
+    elsif session[:sort]
+      @sort = session[:sort]
+    else
+      @sort = nil
+    end
+    
+    if !@ratings_to_show
+      @ratings_to_show = Hash.new
+      @all_ratings.each do |rating|
+        @ratings_to_show[rating] = '1'
+      end
+    end
+      
+    #@ratings_to_show = params[:ratings] || session[:ratings] || {}
+     #if no ratings are clicked - set the checkbox values to clicked
+    
+    if @ratings_to_show && @sort 
+      #if some ratings are clicked - only show the selected ratings
+       @movies = Movie.where(:rating => @ratings_to_show.keys).order(@sort)
+    elsif @ratings_to_show
+      @movies = Movie.where(:rating => @ratings_to_show.keys)
+    elsif @sort
+      @movies = Movie.all.order(@sort)
+    else 
+     @movies.all
+    end  
   end
 
   def new

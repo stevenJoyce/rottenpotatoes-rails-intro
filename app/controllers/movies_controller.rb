@@ -22,7 +22,9 @@ class MoviesController < ApplicationController
       @ratings_to_show = nil
     end
     
-    #
+    #checks if the columns for title or release_date are clicked
+    #if clicked but the movies in alphabetical order
+    #or by oldest to newest
     if params[:sort]
       @sort =params[:sort]
       session[:sort] = @sort
